@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TheWorld.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace TheWorld
 {
     public class Startup
     {
         private IHostingEnvironment _env;
+        private IConfigurationRoot _config;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -21,9 +23,18 @@ namespace TheWorld
         public Startup(IHostingEnvironment env)
         {
             _env = env;
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(_env.ContentRootPath)
+                .AddJsonFile("config.json")
+                .AddEnvironmentVariables();
+
+            _config = builder.Build();
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(_config);
+
             if (_env.IsDevelopment() || _env.IsEnvironment("Testing"))
             {
                 services.AddScoped<IMailService, DebugMailService>();

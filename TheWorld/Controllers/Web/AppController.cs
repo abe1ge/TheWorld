@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace TheWorld.Controllers.Web
     public class AppController : Controller
     {
         private IMailService _mailService;
+        private IConfigurationRoot _config;
 
-        public AppController(IMailService mailService)
+        public AppController(IMailService mailService, IConfigurationRoot config)
         {
             _mailService = mailService;
+            _config = config;
         }
 
         public IActionResult Index()
@@ -32,7 +35,15 @@ namespace TheWorld.Controllers.Web
         [HttpPost]
         public IActionResult Contact(ContactViewModel model)
         {
-            _mailService.SendMail("abel@aol.com", model.Email, "From The World", model.Message);
+            if (model.Email.Contains("aol.com")) ModelState.AddModelError("", "We don't support AOL Addresses");
+            if (ModelState.IsValid)
+            {
+                _mailService.SendMail(_config["MailSettings:ToAddress"], model.Email, "From The World", model.Message);
+
+                ModelState.Clear();
+                ViewBag.UserMessage = "Message Sent";
+            }
+            
             return View();
         }
 
