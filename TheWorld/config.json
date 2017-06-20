@@ -1,5 +1,8 @@
 {
   "MailSettings": {
-    "ToAddress":  "greenfire@live.co.uk"
+    "ToAddress": "greenfire@live.co.uk"
+  },
+  "ConnectionStrings": {
+    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDB; Database=theWorldDb;MultipleActiveResultSets=true;"
   }
 }
