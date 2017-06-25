@@ -3,6 +3,6 @@
     "ToAddress": "greenfire@live.co.uk"
   },
   "ConnectionStrings": {
-    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDB; Database=theWorldDb;MultipleActiveResultSets=true;"
+    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDB; Database=theWorldDb; MultipleActiveResultSets=true;"
   }
 }
